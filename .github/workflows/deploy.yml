@@ -1,21 +1,21 @@
- name: Deploy to Databricks
+name: Deploy to Databricks
 
   on:
     push:
-      branches: [main]
+      branches:
+        - master
 
-  jobs:
+jobs:
     deploy:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
 
         - name: Install Databricks CLI
-          run: pip install databricks-cli
+          run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
         - name: Deploy to Dev
           env:
             DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
             DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          run: |
-            databricks bundle deploy --target dev
+          run: databricks bundle deploy --target dev
